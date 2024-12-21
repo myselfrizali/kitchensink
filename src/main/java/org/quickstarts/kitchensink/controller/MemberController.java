@@ -2,6 +2,7 @@ package org.quickstarts.kitchensink.controller;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
+import org.quickstarts.kitchensink.exception.MemberNotFoundException;
 import org.quickstarts.kitchensink.model.Member;
 import org.quickstarts.kitchensink.service.MemberRegistrationService;
 import org.quickstarts.kitchensink.service.MemberService;
@@ -49,8 +50,8 @@ public class MemberController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
-    public ResponseEntity<Member> lookupMemberById(@PathVariable @Pattern(regexp = ID_PATTERN, message = "Invalid Id format") String id) {
-        Member member = memberService.findById(id).orElseThrow();
+    public ResponseEntity<Member> lookupMemberById(@PathVariable @Pattern(regexp = ID_PATTERN, message = "Invalid Id format") String id) throws MemberNotFoundException {
+        Member member = memberService.findById(id).orElseThrow(MemberNotFoundException::new);
         return ResponseEntity.ok(member);
     }
 }

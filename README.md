@@ -24,7 +24,7 @@ Install dependencies
 
 Start mongodb container
 ```bash
-  docker run --it --rm -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=secret mongo
+  docker run -it --rm -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=secret mongo
 ```
 
 Start the application

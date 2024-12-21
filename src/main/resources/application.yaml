@@ -1,6 +1,11 @@
 spring:
   application:
     name: kitchensink
-#  data:
-#    mongodb:
-#      uri: mongodb://mongoadmin:secret@localhost:27017/kitchensink
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://mongoadmin:secret@localhost:27017/kitchensink?authSource=admin}
+#      username: ${SPRING_DATA_MONGODB_USERNAME:mongoadmin}
+#      password: ${SPRING_DATA_MONGODB_PASSWORD:secret}
+#      host: localhost
+#      port: 27017
+#      database: kitchensink

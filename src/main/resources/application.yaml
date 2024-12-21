@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: kitchensink
+#  data:
+#    mongodb:
+#      uri: mongodb://mongoadmin:secret@localhost:27017/kitchensink

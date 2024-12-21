@@ -33,3 +33,10 @@ Start the application
   cd target
   java -jar kitchensink-0.0.1-SNAPSHOT.jar
 ```
+
+# Or via docker compose
+
+#### Note: No need to run above mentioned mongodb container
+```bash
+  docker-compose up --build
+```

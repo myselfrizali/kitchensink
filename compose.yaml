@@ -6,21 +6,27 @@ services:
       dockerfile: Dockerfile
     container_name: kitchensink
     ports:
-      - "8080:8080"  # Map port 8080 of the container to port 8080 on the host
+      - "8080:8080"
     environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://mongoadmin:secret@mongodb:27017/kitchensink?authSource=admin
+      SPRING_DATA_MONGODB_USERNAME: mongoadmin
+      SPRING_DATA_MONGODB_PASSWORD: secret
+      SPRING_DATA_MONGODB_DATABASE: kitchensink
+      SPRING_DATA_MONGODB_HOST: mongodb
+      SPRING_DATA_MONGODB_PORT: 27017
+      SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: admin
     depends_on:
       - mongodb  # Ensures MongoDB is started before the app
 
   # Service 2: MongoDB (official MongoDB image)
   mongodb:
-    image: mongo:6.0.20-rc3  # Use the official MongoDB image (version 6.0 or the latest)
+    image: mongo
     container_name: mongodb
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongoadmin
       MONGO_INITDB_ROOT_PASSWORD: secret
+      MONGO_INITDB_DATABASE: kitchensink
     ports:
-      - "27017:27017"  # Map MongoDB port to the host
+      - "27017:27017"
     volumes:
       - mongo-data:/data/db  # Persistent data storage for MongoDB
 

@@ -34,14 +34,14 @@ public class MemberController {
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<?> createMember(@RequestBody @Valid Member newMember) {
+    public ResponseEntity<String> createMember(@RequestBody @Valid Member newMember) {
         log.info("Creating member");
 
         memberService.isEmailExist(newMember.getEmail());
 
         memberRegistrationService.register(newMember);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("Member successfully created");
     }
 
     @RequestMapping(method = RequestMethod.GET)

@@ -7,6 +7,7 @@ import org.quickstarts.kitchensink.repository.UserRepository;
 import org.quickstarts.kitchensink.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +20,7 @@ public class UserController {
 
     private final UserService userService;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<String> register(@RequestBody UserSignUpDTO userSignUpDTO) {
@@ -27,18 +29,13 @@ public class UserController {
             return new ResponseEntity<>("Email already exists", HttpStatus.CONFLICT);
         }
 
+        String encodedPassword = passwordEncoder.encode(userSignUpDTO.getPassword());
+
         User newUser = new User();
         newUser.setEmail(userSignUpDTO.getEmail());
-        newUser.setPassword(userSignUpDTO.getPassword());
+        newUser.setPassword(encodedPassword);
 
         userService.createUser(newUser);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Created");
+        return ResponseEntity.status(HttpStatus.CREATED).body("User successfully created");
     }
-
-//    @RequestMapping(value = "/profile", method = RequestMethod.GET)
-//    public ResponseEntity<?> getUserProfile(HttpServletRequest request) {
-//        String userName = request.getUserPrincipal().getName();
-//        userService.getUserProfileByUserName(userName);
-//        return ResponseEntity.ok(userName);
-//    }
 }

@@ -6,7 +6,6 @@ import org.quickstarts.kitchensink.pojo.UserPrincipalDTO;
 import org.quickstarts.kitchensink.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,16 +13,19 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepo;
-    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return new UserPrincipalDTO(userRepo.findByEmail(username));
+        User user = userRepo.findByEmail(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with email: " + username);
+        }
+
+        return new UserPrincipalDTO(user);
     }
 
     @Override
     public void createUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
     }
 }

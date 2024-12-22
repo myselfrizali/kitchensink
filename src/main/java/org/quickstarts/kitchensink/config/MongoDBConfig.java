@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 @Configuration
-public class MongoConfig {
+public class MongoDBConfig {
 
     @Bean
     public MongoTemplate mongoTemplate(MongoClient mongoClient) {

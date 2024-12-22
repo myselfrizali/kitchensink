@@ -4,7 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.quickstarts.kitchensink.pojo.AuthRequestDTO;
 import org.quickstarts.kitchensink.pojo.AuthResponseDTO;
 import org.quickstarts.kitchensink.service.JwtTokenService;
-import org.quickstarts.kitchensink.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,9 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+
     private final AuthenticationManager authenticationManager;
     private final JwtTokenService jwtTokenService;
-    private final UserService userService;
 
     @RequestMapping(value = "/token", method = RequestMethod.POST)
     public ResponseEntity<?> authenticate(@RequestBody AuthRequestDTO authRequestDTO) {
@@ -36,23 +38,11 @@ public class AuthController {
             }
 
         } catch (BadCredentialsException e) {
-            System.out.println("Bad Credentials");
+            logger.error("Authentication failed: Bad credentials for user {}", authRequestDTO.getUsername());
+        }  catch (Exception e) {
+            logger.error("Authentication error: {}", e.getMessage());
         }
+
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Bad Credentials");
     }
-
-//    @RequestMapping(value = "/refresh-token", method = RequestMethod.POST)
-//    public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequestDTO request) {
-//        final String refreshToken = request.getRefreshToken();
-//        String username = jwtTokenService.extractUsername(refreshToken);
-//
-//        UserDetails userDetails = userService.loadUserByUsername(username);
-//
-//        if (jwtTokenService.validateToken(refreshToken, userDetails)) {
-//            String newAccessToken = jwtTokenService.generateToken(userDetails.getUsername());
-//            return ResponseEntity.ok(new AuthResponseDTO(newAccessToken, refreshToken));
-//        } else {
-//            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid refresh token");
-//        }
-//    }
 }

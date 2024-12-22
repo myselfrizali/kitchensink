@@ -2,6 +2,7 @@ package org.quickstarts.kitchensink.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import lombok.Getter;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +16,11 @@ import java.util.function.Function;
 
 @Service
 public class JwtTokenService {
+    private final static long JWT_EXPIRATION = 1000 * 60 * 60; // 1 hour
+    private final static long REFRESH_EXPIRATION = 1000 * 60 * 60 * 24 * 7; // 1 week
 
+    @Getter
     private final SecretKey key;
-    private final long jwtExpiration = 1000 * 60 * 60; // 1 hour
-    private final long refreshExpiration = 1000 * 60 * 60 * 24 * 7; // 1 week
 
     public JwtTokenService() {
         try {
@@ -41,7 +43,7 @@ public class JwtTokenService {
                 .claim("isRefreshToken", false)
                 .claims(extraClaims)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + jwtExpiration))
+                .expiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION))
                 .signWith(key)
                 .compact();
     }
@@ -57,7 +59,7 @@ public class JwtTokenService {
                 .subject(username)
                 .claims(extraClaims)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + refreshExpiration))
+                .expiration(new Date(System.currentTimeMillis() + REFRESH_EXPIRATION))
                 .signWith(key)
                 .compact();
     }
@@ -94,8 +96,7 @@ public class JwtTokenService {
         return Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();
     }
 
-    private Boolean isTokenExpired(String token) {
+    Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
-
 }

@@ -1,6 +1,5 @@
 package org.quickstarts.kitchensink.service;
 
-import jakarta.validation.ValidationException;
 import org.quickstarts.kitchensink.model.Member;
 import org.quickstarts.kitchensink.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,12 +48,7 @@ public class MemberService {
 
     public boolean isEmailExist(String email) {
         log.info("Checking if email exists");
-        boolean isEmailExist = memberRepository.existsByEmail(email);
-        if (isEmailExist) {
-            throw new ValidationException("Unique Email Violation");
-        }
-
-        return false;
+        return memberRepository.existsByEmail(email);
     }
 
     public void delete(Member member) {

@@ -1,6 +1,7 @@
 package org.quickstarts.kitchensink.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
 import jakarta.validation.constraints.Pattern;
 import org.quickstarts.kitchensink.exception.MemberNotFoundException;
 import org.quickstarts.kitchensink.model.Member;
@@ -38,7 +39,10 @@ public class MemberController {
     public ResponseEntity<Member> createMember(@RequestBody @Valid MemberDTO newMemberRequest) throws MemberNotFoundException {
         log.info("Creating member");
 
-        memberService.isEmailExist(newMemberRequest.getEmail());
+        boolean emailExist = memberService.isEmailExist(newMemberRequest.getEmail());
+        if (emailExist) {
+            throw new ValidationException("Unique Email Violation");
+        }
 
         Member newMember = new Member(newMemberRequest.getName(), newMemberRequest.getEmail(), newMemberRequest.getPhoneNumber());
         memberRegistrationService.register(newMember);

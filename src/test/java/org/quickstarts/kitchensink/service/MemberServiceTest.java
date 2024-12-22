@@ -1,6 +1,5 @@
 package org.quickstarts.kitchensink.service;
 
-import jakarta.validation.ValidationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -119,10 +117,8 @@ class MemberServiceTest {
         when(memberRepository.existsByEmail(email)).thenReturn(true);
 
         // Act & Assert
-        assertThatThrownBy(() -> memberService.isEmailExist(email))
-                .isInstanceOf(ValidationException.class)
-                .hasMessageContaining("Unique Email Violation");
-
+        boolean emailExist = memberService.isEmailExist(email);
+        assertThat(emailExist).isTrue();
         verify(memberRepository, times(1)).existsByEmail(email);
     }
 

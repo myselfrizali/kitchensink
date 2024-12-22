@@ -49,6 +49,7 @@ class MemberControllerTest {
         // Arrange
         Member newMember = new Member("John Doe", "john@example.com", "9876543210");
         when(memberService.isEmailExist(newMember.getEmail())).thenReturn(false);
+        when(memberService.findByEmail(newMember.getEmail())).thenReturn(Optional.of(newMember));
         doNothing().when(memberRegistrationService).register(newMember);
 
         // Act & Assert

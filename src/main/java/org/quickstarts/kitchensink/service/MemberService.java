@@ -27,6 +27,11 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
+    public Optional<Member> findByEmail(String email) {
+        log.info("Finding member by email: " + email);
+        return memberRepository.findByEmail(email);
+    }
+
     public List<Member> findAllOrderedByName() {
         log.info("Finding all members by name");
         return memberRepository.findAllOrderedBy(Sort.by("name"));
@@ -50,5 +55,11 @@ public class MemberService {
         }
 
         return false;
+    }
+
+    public void delete(Member member) {
+        log.info("Deleting a member: " + member.getId());
+        member.setDeleted(true);
+        memberRepository.save(member);
     }
 }

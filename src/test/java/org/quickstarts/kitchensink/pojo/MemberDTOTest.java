@@ -1,4 +1,4 @@
-package org.quickstarts.kitchensink.model;
+package org.quickstarts.kitchensink.pojo;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -6,16 +6,12 @@ import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(SpringExtension.class)
-class MemberTest {
-
+public class MemberDTOTest {
     private Validator validator;
 
     @BeforeEach
@@ -27,10 +23,10 @@ class MemberTest {
     @Test
     void testValidMember() {
         // Arrange
-        Member member = new Member("John Doe", "john.doe@example.com", "1234567890");
+        MemberDTO member = new MemberDTO("John Doe", "john.doe@example.com", "1234567890");
 
         // Act
-        Set<ConstraintViolation<Member>> violations = validator.validate(member);
+        Set<ConstraintViolation<MemberDTO>> violations = validator.validate(member);
 
         // Assert
         assertThat(violations).isEmpty();
@@ -39,10 +35,10 @@ class MemberTest {
     @Test
     void testMemberNameValidation() {
         // Arrange
-        Member member = new Member("John123", "john.doe@example.com", "1234567890");
+        MemberDTO member = new MemberDTO("John123", "john.doe@example.com", "1234567890");
 
         // Act
-        Set<ConstraintViolation<Member>> violations = validator.validate(member);
+        Set<ConstraintViolation<MemberDTO>> violations = validator.validate(member);
 
         // Assert
         assertThat(violations).isNotEmpty();
@@ -52,10 +48,10 @@ class MemberTest {
     @Test
     void testMemberEmailValidation() {
         // Arrange
-        Member member = new Member("John Doe", "invalid-email", "1234567890");
+        MemberDTO member = new MemberDTO("John Doe", "invalid-email", "1234567890");
 
         // Act
-        Set<ConstraintViolation<Member>> violations = validator.validate(member);
+        Set<ConstraintViolation<MemberDTO>> violations = validator.validate(member);
 
         // Assert
         assertThat(violations).isNotEmpty();
@@ -65,10 +61,10 @@ class MemberTest {
     @Test
     void testMemberPhoneNumberValidation() {
         // Arrange
-        Member member = new Member("John Doe", "john.doe@example.com", "12345");
+        MemberDTO member = new MemberDTO("John Doe", "john.doe@example.com", "12345");
 
         // Act
-        Set<ConstraintViolation<Member>> violations = validator.validate(member);
+        Set<ConstraintViolation<MemberDTO>> violations = validator.validate(member);
 
         // Assert
         assertThat(violations).isNotEmpty();
@@ -78,10 +74,10 @@ class MemberTest {
     @Test
     void testMemberPhoneNumberDigitsValidation() {
         // Arrange
-        Member member = new Member("John Doe", "john.doe@example.com", "12345abcdd");
+        MemberDTO member = new MemberDTO("John Doe", "john.doe@example.com", "12345abcdd");
 
         // Act
-        Set<ConstraintViolation<Member>> violations = validator.validate(member);
+        Set<ConstraintViolation<MemberDTO>> violations = validator.validate(member);
 
         // Assert
         assertThat(violations).isNotEmpty();
@@ -96,7 +92,7 @@ class MemberTest {
         String phoneNumber = "0987654321";
 
         // Act
-        Member member = new Member(name, email, phoneNumber);
+        MemberDTO member = new MemberDTO(name, email, phoneNumber);
 
         // Assert
         assertThat(member.getName()).isEqualTo(name);

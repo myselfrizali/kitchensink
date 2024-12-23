@@ -22,6 +22,8 @@ Install dependencies
   mvn clean install
 ```
 
+# Run locally
+
 Start mongodb container
 ```bash
   docker run -it --rm -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=secret mongo
@@ -37,6 +39,7 @@ Start the application
 # Or via docker compose
 
 #### Note: No need to run above mentioned mongodb container
+
 ```bash
   docker-compose up --build
 ```

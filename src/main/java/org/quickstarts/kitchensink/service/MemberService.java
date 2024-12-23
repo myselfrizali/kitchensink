@@ -1,59 +1,23 @@
 package org.quickstarts.kitchensink.service;
 
 import org.quickstarts.kitchensink.model.Member;
-import org.quickstarts.kitchensink.repository.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
-@Service
-public class MemberService {
-    private final Logger log = Logger.getLogger(this.getClass().getName());
+public interface MemberService {
 
-    private final MemberRepository memberRepository;
+    List<Member> findAll();
 
-    @Autowired
-    public MemberService(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
-    }
+    Optional<Member> findByEmail(String email);
 
-    public List<Member> findAll() {
-        log.info("Finding all members");
-        return memberRepository.findAll();
-    }
+    List<Member> findAllOrderedByName();
 
-    public Optional<Member> findByEmail(String email) {
-        log.info("Finding member by email: " + email);
-        return memberRepository.findByEmail(email);
-    }
+    Optional<Member> findById(String id);
 
-    public List<Member> findAllOrderedByName() {
-        log.info("Finding all members by name");
-        return memberRepository.findAllOrderedBy(Sort.by("name"));
-    }
+    void save(Member member);
 
-    public Optional<Member> findById(String id) {
-        log.info("Finding a member by id");
-        return memberRepository.findById(id);
-    }
+    boolean isEmailExist(String email);
 
-    public void save(Member member) {
-        log.info("Saving a member");
-        memberRepository.save(member);
-    }
-
-    public boolean isEmailExist(String email) {
-        log.info("Checking if email exists");
-        return memberRepository.existsByEmail(email);
-    }
-
-    public void delete(Member member) {
-        log.info("Deleting a member: " + member.getId());
-        member.setDeleted(true);
-        memberRepository.save(member);
-    }
+    void delete(Member member);
 }

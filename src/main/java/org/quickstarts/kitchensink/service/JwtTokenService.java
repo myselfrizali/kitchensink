@@ -3,6 +3,7 @@ package org.quickstarts.kitchensink.service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+@Slf4j
 @Service
 public class JwtTokenService {
     private final static long JWT_EXPIRATION = 1000 * 60 * 60; // 1 hour
@@ -36,6 +38,7 @@ public class JwtTokenService {
     }
 
     public String generateToken(String username, Map<String, Object> extraClaims) {
+        log.info("Generating token for user: {}", username);
         return Jwts.builder()
                 .header().add("typ", "access")
                 .and()
@@ -53,6 +56,7 @@ public class JwtTokenService {
     }
 
     public String generateRefreshToken(String username, Map<String, Object> extraClaims) {
+        log.info("Generating refresh token for user: {}", username);
         return Jwts.builder()
                 .header().add("typ", "refresh")
                 .and()
@@ -65,11 +69,13 @@ public class JwtTokenService {
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {
+        log.info("Validating token for user: {}", userDetails.getUsername());
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
     public boolean isRefreshToken(String token) {
+        log.info("Checking if refresh token is valid: {}", token);
         String typ = (String) Jwts.parser()
                 .verifyWith(key)
                 .build()
@@ -88,6 +94,7 @@ public class JwtTokenService {
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        log.debug("Extracting claims from token: {}", token);
         Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
@@ -97,6 +104,7 @@ public class JwtTokenService {
     }
 
     Boolean isTokenExpired(String token) {
+        log.debug("Checking if token is expired: {}", token);
         return extractExpiration(token).before(new Date());
     }
 }

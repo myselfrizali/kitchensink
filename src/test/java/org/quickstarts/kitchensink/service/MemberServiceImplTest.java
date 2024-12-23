@@ -18,13 +18,13 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class MemberServiceTest {
+class MemberServiceImplTest {
 
     @Mock
     private MemberRepository memberRepository;
 
     @InjectMocks
-    private MemberService memberService;
+    private MemberServiceImpl memberService;
 
     @BeforeEach
     void setUp() {

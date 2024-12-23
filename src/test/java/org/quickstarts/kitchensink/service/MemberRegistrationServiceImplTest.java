@@ -12,7 +12,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-class MemberRegistrationServiceTest {
+class MemberRegistrationServiceImplTest {
 
     @Mock
     private MemberRepository memberRepository;
@@ -21,7 +21,7 @@ class MemberRegistrationServiceTest {
     private ApplicationEventPublisher applicationEventPublisher;
 
     @InjectMocks
-    private MemberRegistrationService memberRegistrationService;
+    private MemberRegistrationServiceImpl memberRegistrationService;
 
     @BeforeEach
     void setUp() {

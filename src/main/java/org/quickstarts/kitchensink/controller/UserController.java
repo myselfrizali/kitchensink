@@ -2,7 +2,9 @@ package org.quickstarts.kitchensink.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.quickstarts.kitchensink.exception.MemberAlreadyExistsException;
 import org.quickstarts.kitchensink.model.User;
+import org.quickstarts.kitchensink.pojo.ApiResponse;
 import org.quickstarts.kitchensink.pojo.UserSignUpDTO;
 import org.quickstarts.kitchensink.repository.UserRepository;
 import org.quickstarts.kitchensink.service.UserService;
@@ -24,11 +26,11 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<String> register(@RequestBody UserSignUpDTO userSignUpDTO) {
-        log.info("Registering user: {}", userSignUpDTO);
+    public ResponseEntity<ApiResponse<String>> register(@RequestBody UserSignUpDTO userSignUpDTO) {
+        log.info("Creating user: {}", userSignUpDTO);
         User userByEmail = userRepository.findByEmail(userSignUpDTO.getEmail());
         if (userByEmail != null) {
-            return new ResponseEntity<>("Email already exists", HttpStatus.CONFLICT);
+            throw new MemberAlreadyExistsException(("User with email " + userSignUpDTO.getEmail() + " already exists."));
         }
 
         String encodedPassword = passwordEncoder.encode(userSignUpDTO.getPassword());
@@ -38,6 +40,14 @@ public class UserController {
         newUser.setPassword(encodedPassword);
 
         userService.createUser(newUser);
-        return ResponseEntity.status(HttpStatus.CREATED).body("User successfully created");
+
+        HttpStatus status = HttpStatus.CREATED;
+        ApiResponse<String> response = new ApiResponse<>(
+                status.value(),
+                "User successfully created",
+                null
+        );
+
+        return new ResponseEntity<>(response, status);
     }
 }

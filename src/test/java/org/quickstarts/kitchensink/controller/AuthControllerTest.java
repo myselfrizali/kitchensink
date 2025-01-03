@@ -1,19 +1,17 @@
 package org.quickstarts.kitchensink.controller;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.quickstarts.kitchensink.pojo.AuthRequestDTO;
 import org.quickstarts.kitchensink.service.JwtTokenService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
@@ -24,34 +22,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@SpringBootTest
+@AutoConfigureMockMvc
 public class AuthControllerTest {
 
-    @Mock
+    @MockitoBean
     private AuthenticationManager authenticationManager;
 
-    @Mock
+    @MockitoBean
     private JwtTokenService jwtTokenService;
 
-    @InjectMocks
-    private AuthController authController;
-
+    @Autowired
     private MockMvc mockMvc;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(authController).build();
-    }
 
     @Test
     void testAuthenticateSuccess() throws Exception {
         // Arrange
         String username = "user1";
-        String password = "password123";
         String token = "access_token";
         String refreshToken = "refresh_token";
 
-        AuthRequestDTO authRequestDTO = new AuthRequestDTO(username, password);
         Authentication authentication = mock(Authentication.class);
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(authentication);
         when(authentication.isAuthenticated()).thenReturn(true);
@@ -75,10 +65,6 @@ public class AuthControllerTest {
     @Test
     void testAuthenticateFailure() throws Exception {
         // Arrange
-        String username = "user1";
-        String password = "password123";
-        AuthRequestDTO authRequestDTO = new AuthRequestDTO(username, password);
-
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenThrow(new BadCredentialsException("Bad credentials"));
 

@@ -55,7 +55,7 @@ public class MemberDTOTest {
 
         // Assert
         assertThat(violations).isNotEmpty();
-        assertThat(violations.iterator().next().getMessage()).isEqualTo("must be a well-formed email address");
+        assertThat(violations.iterator().next().getMessage()).isEqualTo("Invalid email");
     }
 
     @Test
@@ -68,7 +68,7 @@ public class MemberDTOTest {
 
         // Assert
         assertThat(violations).isNotEmpty();
-        assertThat(violations.iterator().next().getMessage()).isEqualTo("size must be between 10 and 12");
+        assertThat(violations.iterator().next().getMessage()).isEqualTo("Phone number must be 10 to 12 digits.");
     }
 
     @Test
@@ -81,7 +81,7 @@ public class MemberDTOTest {
 
         // Assert
         assertThat(violations).isNotEmpty();
-        assertThat(violations.iterator().next().getMessage()).isEqualTo("numeric value out of bounds (<12 digits>.<0 digits> expected)");
+        assertThat(violations.iterator().next().getMessage()).isEqualTo("Must be numbers only");
     }
 
     @Test

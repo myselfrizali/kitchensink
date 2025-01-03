@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.quickstarts.kitchensink.enums.MemberStatus;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -34,13 +35,18 @@ public class Member implements Serializable {
     private boolean isDeleted;
 
     @Field("is_active")
-    private boolean isActive;
+    private MemberStatus status;
 
     public Member(String name, String email, String phoneNumber) {
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.isDeleted = false;
-        this.isActive = true;
+        this.status = MemberStatus.ACTIVE;
+    }
+
+    @JsonIgnore
+    public boolean isActive() {
+        return status != null && status == MemberStatus.ACTIVE;
     }
 }

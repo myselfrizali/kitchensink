@@ -1,6 +1,7 @@
 package org.quickstarts.kitchensink.config;
 
 import org.quickstarts.kitchensink.filter.JWTAuthenticationFilter;
+import org.quickstarts.kitchensink.filter.JwtAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,7 +20,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
 
     @Bean
-    protected SecurityFilterChain securityFilterChain(HttpSecurity http, JWTAuthenticationFilter jwtAuthenticationFilter) throws Exception {
+    protected SecurityFilterChain securityFilterChain(HttpSecurity http,
+                                                      JWTAuthenticationFilter jwtAuthenticationFilter,
+                                                      JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint
+    ) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
@@ -28,6 +32,7 @@ public class WebSecurityConfig {
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(configurer -> configurer.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .build();
     }
 

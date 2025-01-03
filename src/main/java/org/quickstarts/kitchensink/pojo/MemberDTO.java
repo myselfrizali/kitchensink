@@ -1,8 +1,6 @@
 package org.quickstarts.kitchensink.pojo;
 
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -16,18 +14,17 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberDTO {
-    @NotNull
-    @Size(min = 1, max = 25)
+    @NotBlank(message = "Name is mandatory")
+    @Size(min = 1, max = 25, message = "Name must of length {min} to {max}")
     @Pattern(regexp = "[^0-9]*", message = "Must not contain numbers")
     private String name;
 
-    @NotNull
-    @NotEmpty
-    @Email
+    @NotBlank(message = "Email is mandatory")
+    @Pattern(regexp = "^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})$", message = "Invalid email")
     private String email;
 
-    @NotNull
-    @Size(min = 10, max = 12)
-    @Digits(fraction = 0, integer = 12)
+    @NotNull(message = "Phone number is mandatory")
+    @Size(min = 10, max = 12, message = "Phone number must be {min} to {max} digits.")
+    @Pattern(regexp = "^[0-9]*", message = "Must be numbers only")
     private String phoneNumber;
 }

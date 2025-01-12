@@ -154,7 +154,7 @@ public class MemberController {
         ApiResponse<Member> response = new ApiResponse<>(
                 httpStatus.value(),
                 "Member with id: " + id + " successfully marked " + status,
-                null
+                existingMember
         );
 
         return new ResponseEntity<>(response, httpStatus);

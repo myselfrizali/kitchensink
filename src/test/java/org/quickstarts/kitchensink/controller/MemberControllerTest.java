@@ -551,9 +551,10 @@ class MemberControllerTest {
                 .andReturn();
 
         verify(memberService).findById(memberId);
+        verify(mockMember).setStatus(any(MemberStatus.class));
         ApiResponse<Member> apiResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {});
         assertThat(apiResponse.getStatus()).isEqualTo(200);
         assertThat(apiResponse.getMessage()).isEqualTo("Member with id: 6778007913f34819876ffff5 successfully marked ACTIVE");
-        assertThat(apiResponse.getData()).isNull();
+        assertThat(apiResponse.getData()).isNotNull();
     }
 }

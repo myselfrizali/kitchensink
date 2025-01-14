@@ -60,12 +60,12 @@ class UserServiceImplTest {
     }
 
     @Test
-    void testCreateUser() {
+    void testSaveOrUpdate() {
         // Arrange
         User user = new User("test@example.com", "plainPassword");
 
         // Act
-        userServiceImpl.createUser(user);
+        userServiceImpl.saveOrUpdate(user);
 
         // Assert
         verify(userRepo, times(1)).save(user);  // The user should be saved to the repository

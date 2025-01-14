@@ -207,43 +207,6 @@ class MemberControllerTest {
                 .toList();
         assertThat(messages).containsExactlyInAnyOrder("Email is mandatory", "Invalid email");
     }
-/*
-    @Test
-    void testListAllMembers() throws Exception {
-        // Arrange
-        Member member1 = new Member("Alice", "alice@example.com", "9876543210");
-        Member member2 = new Member("Bob", "bob@example.com", "1234567890");
-        List<Member> members = List.of(member1, member2);
-        when(memberService.findAllOrderedByName()).thenReturn(members);
-
-        // Act & Assert
-        mockMvc.perform(get("/api/v1/members"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data[0].name").value("Alice"))
-                .andExpect(jsonPath("$.data[1].name").value("Bob"));
-
-        // Verify interactions
-        verify(memberService).findAllOrderedByName();
-    }
-
-    @Test
-    void testLookupMemberById_found() throws Exception {
-        // Arrange
-        String memberId = "605c72ef1532073c73f1a7b2";  // Example MongoDB ObjectId
-        Member member = new Member("John Doe", "john@example.com", "9876543210");
-        member.setId(memberId);
-        when(memberService.findById(memberId)).thenReturn(Optional.of(member));
-
-        // Act & Assert
-        mockMvc.perform(get("/api/v1/members/{id}", memberId))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.name").value("John Doe"))
-                .andExpect(jsonPath("$.data.email").value("john@example.com"));
-
-        // Verify interactions
-        verify(memberService).findById(memberId);
-    }
-*/
 
     @Test
     @WithMockUser

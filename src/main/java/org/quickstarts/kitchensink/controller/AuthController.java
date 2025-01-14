@@ -1,5 +1,6 @@
 package org.quickstarts.kitchensink.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.quickstarts.kitchensink.pojo.AuthRequestDTO;
@@ -26,7 +27,7 @@ public class AuthController {
     private final JwtTokenService jwtTokenService;
 
     @RequestMapping(value = "/token", method = RequestMethod.POST)
-    public ResponseEntity<?> authenticate(@RequestBody AuthRequestDTO authRequestDTO) {
+    public ResponseEntity<?> authenticate(@RequestBody @Valid AuthRequestDTO authRequestDTO) {
         try {
             Authentication authenticate =
                     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDTO.getUsername(), authRequestDTO.getPassword()));

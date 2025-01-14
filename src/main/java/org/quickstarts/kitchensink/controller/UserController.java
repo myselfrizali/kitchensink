@@ -1,5 +1,6 @@
 package org.quickstarts.kitchensink.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.quickstarts.kitchensink.exception.MemberAlreadyExistsException;
@@ -26,7 +27,7 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<ApiResponse<String>> register(@RequestBody UserSignUpDTO userSignUpDTO) {
+    public ResponseEntity<ApiResponse<String>> register(@RequestBody @Valid UserSignUpDTO userSignUpDTO) {
         log.info("Creating user: {}", userSignUpDTO);
         User userByEmail = userRepository.findByEmail(userSignUpDTO.getEmail());
         if (userByEmail != null) {

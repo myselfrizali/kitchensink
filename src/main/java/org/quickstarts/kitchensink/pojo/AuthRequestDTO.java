@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import static org.quickstarts.kitchensink.util.ApplicationConstants.EMAIL_REGEX;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,7 +17,7 @@ import lombok.Setter;
 public class AuthRequestDTO {
 
     @NotNull(message = "Username is mandatory")
-    @Pattern(regexp = "^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})$", message = "Invalid username")
+    @Pattern(regexp = EMAIL_REGEX, message = "Invalid username")
     private String username;
 
     @NotBlank(message = "Password is mandatory")

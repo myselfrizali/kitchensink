@@ -6,7 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.quickstarts.kitchensink.util.ApplicationConstants;
+
+import static org.quickstarts.kitchensink.util.ApplicationConstants.EMAIL_REGEX;
+import static org.quickstarts.kitchensink.util.ApplicationConstants.PASSWORD_REGEX;
 
 @Getter
 @Setter
@@ -15,11 +17,11 @@ import org.quickstarts.kitchensink.util.ApplicationConstants;
 public class UserSignUpDTO {
 
     @NotNull(message = "Email is mandatory")
-    @Pattern(regexp = "^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})$", message = "Invalid email")
+    @Pattern(regexp = EMAIL_REGEX, message = "Invalid email")
     private String email;
 
     @NotNull(message = "Password is mandatory")
-    @Pattern(regexp = ApplicationConstants.PASSWORD_REGEX,
+    @Pattern(regexp = PASSWORD_REGEX,
             message = "Password must be at least 8 characters long and include uppercase, lowercase, and special characters.")
     private String password;
 }

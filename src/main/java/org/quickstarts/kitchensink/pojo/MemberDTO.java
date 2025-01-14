@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import static org.quickstarts.kitchensink.util.ApplicationConstants.EMAIL_REGEX;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,7 +22,7 @@ public class MemberDTO {
     private String name;
 
     @NotBlank(message = "Email is mandatory")
-    @Pattern(regexp = "^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})$", message = "Invalid email")
+    @Pattern(regexp = EMAIL_REGEX, message = "Invalid email")
     private String email;
 
     @NotNull(message = "Phone number is mandatory")
